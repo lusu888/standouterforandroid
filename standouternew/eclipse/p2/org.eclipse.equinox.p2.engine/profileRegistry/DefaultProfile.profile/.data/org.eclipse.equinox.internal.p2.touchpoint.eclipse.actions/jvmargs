@@ -1,0 +1,5 @@
+#Mon Jun 23 20:08:31 UTC 2014
+-Xms=40m,40m
+eclipse.userDefined\:-Xms=40m
+-Xmx=768m,384m
+eclipse.userDefined\:-Xmx=256m

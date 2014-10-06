@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <RelativeLayout   xmlns:android="http://schemas.android.com/apk/res/android"
+       android:id="@+id/listviewcell2"
+      android:descendantFocusability= "blocksDescendants"
+        android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+      <ImageView
+           android:id="@+id/vdimage2"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           
+           />
+
+       <ImageView
+           android:id="@+id/shadowvd2"
+           android:layout_width="wrap_content"
+           android:layout_height="115dp"
+          
+           
+           />
+       
+
+       
+    <LinearLayout
+          android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_centerVertical="true"
+         android:id="@+id/buttonslv"
+          
+           
+           >
+           <ImageView
+           android:id="@+id/sharebtn2"
+           android:layout_width="100dp"
+           android:layout_height="100dp"
+          
+           android:scaleType="fitXY"           
+           android:focusable="false"/>
+           <ImageView
+        android:id="@+id/sharefb2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:focusable="false"
+         android:scaleType="fitXY"
+         />
+
+    <ImageView
+         android:id="@+id/sharewp2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:focusable="false"
+         android:scaleType="fitXY"
+         />
+
+    <ImageView
+        android:id="@+id/votebtn2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:focusable="false"
+        android:scaleType="fitXY" />
+
+       </LinearLayout>
+           
+       
+        
+
+       <TextView
+           android:id="@+id/votetext2"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentBottom="true"
+           android:textColor="#ffffff"
+           android:text="TextView" />
+
+       
+       
+   </RelativeLayout>
+
+

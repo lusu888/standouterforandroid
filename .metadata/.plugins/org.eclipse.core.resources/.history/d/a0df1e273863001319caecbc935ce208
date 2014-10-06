@@ -1,0 +1,356 @@
+package com.example.standouter;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EncodingUtils;
+import org.json.JSONException;
+
+import com.facebook.FacebookException;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.LoginButton;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
+import com.squareup.picasso.Picasso;
+
+
+import adapter.Contestadapter;
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+public class Login extends Activity {
+
+	
+	private static final String TAG = "MainFragment";
+	public static Session session;
+	public static GraphUser user;
+	public static String username;
+
+	public static boolean x=false;
+	private static UiLifecycleHelper uiHelper;
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(final Session session, final SessionState state, final Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
+
+	static String AT;
+	public static LoginButton loginButton;
+	private Button Loginsfb;
+	
+	//写数据到SD中的文件
+	public static void writeFileSdcardFile(String fileName,String write_str) throws IOException{ 
+	 try{ 
+
+	       FileOutputStream fout = new FileOutputStream(fileName); 
+	       byte [] bytes = write_str.getBytes(); 
+
+	       fout.write(bytes); 
+	       fout.close(); 
+	     }
+
+	      catch(Exception e){ 
+	        e.printStackTrace(); 
+	       } 
+	   } 
+
+	public void postData(String username,String password) {
+	   
+	    HttpPost httppost = new HttpPost("http://demostandouter.zerouno.it/j_spring_security_check");
+
+	    try {
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+	        nameValuePairs.add(new BasicNameValuePair("json_response","true"));
+	        nameValuePairs.add(new BasicNameValuePair("j_username",  username));
+	        nameValuePairs.add(new BasicNameValuePair("j_password", password));
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        HttpResponse response = MainActivity.httpclient.execute(httppost);
+	        Log.i("zz", "Response from server: " + response.toString());
+			//Log.i("sd",Json.getJson("http://demostandouter.zerouno.it/login_status.json",MainActivity.httpclient).toString());
+
+
+	    } catch (ClientProtocolException e) {
+
+	    } catch (IOException e) {
+
+	    }
+	    
+	    MainActivity.loginoperas();
+		
+		
+		//	Log.i("id",Json.getJson("http://www.standouter.com/login_status.json").toString());
+			
+			//Intent y = new Intent();
+	        //y.setClass(Login.this,  MainActivity.class);
+	        
+	        //startActivity(y);
+	        
+	         finish();
+	         overridePendingTransition(R.anim.activity_open,R.anim.activity_close);
+			x=true;
+	} 
+	//读SD中的文件
+	public String readFileSdcardFile(String fileName) throws IOException{ 
+	  String res=""; 
+	  try{ 
+	         FileInputStream fin = new FileInputStream(fileName); 
+
+	         int length = fin.available(); 
+
+	         byte [] buffer = new byte[length]; 
+	         fin.read(buffer);     
+
+	         res = EncodingUtils.getString(buffer, "UTF-8"); 
+
+	         fin.close();     
+	        } 
+
+	        catch(Exception e){ 
+	         e.printStackTrace(); 
+	        } 
+	        return res; 
+	} 
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
+		setContentView(R.layout.login);
+		loginButton = (LoginButton) findViewById(R.id.authButton);
+	      
+        loginButton.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+            @Override
+            public void onUserInfoFetched(GraphUser user) {
+            	Login.this.user = user;
+           	
+            	
+
+            	
+                
+                
+            }
+        });
+        
+        
+        Loginsfb=(Button)this.findViewById(R.id.loiginsfb);
+        Loginsfb.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(Login.session.isOpened()){
+					loginsfb();
+				}
+				else{
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+							Login.this);
+			 
+						// set title
+						alertDialogBuilder.setTitle("Share on FaceBook");
+			 
+						// set dialog message
+						alertDialogBuilder
+							.setMessage("Please login FaceBook first!")
+							.setCancelable(false)
+							
+							.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									// if this button is clicked, close
+									// current activity
+									dialog.cancel();
+								}
+							  })
+							;
+			 
+							// create alert dialog
+							AlertDialog alertDialog = alertDialogBuilder.create();
+			 
+							// show it
+							alertDialog.show();
+				}
+			}
+		});
+        final EditText usernameedit=(EditText)this.findViewById(R.id.usernameedit);
+        final EditText passwordedit=(EditText)this.findViewById(R.id.Passwordedit);
+        ImageView logins=(ImageView)this.findViewById(R.id.logins);
+        logins.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				postData(usernameedit.getText().toString(),passwordedit.getText().toString());
+			}
+		});
+        LinearLayout loingstlayout=(LinearLayout)this.findViewById(R.id.loginslayout);
+        if(MainActivity.LOGINSTATE==1){
+        	loingstlayout.setVisibility(View.GONE);
+        }
+        loingstlayout.setVisibility(View.VISIBLE);
+
+	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+
+	    uiHelper.onActivityResult(requestCode, resultCode, data, new FacebookDialog.Callback() {
+	        @Override
+	        public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+	            Log.e("Activity", String.format("Error: %s", error.toString()));
+	        }
+
+	        @Override
+	        public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+	            Log.i("Activity", "Success!");
+	        }
+	    });
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.login, menu);
+		return true;
+	}
+	
+	public static void callFacebookLogout(Context context) {
+        Session session = Session.getActiveSession();
+       
+        
+        if (session != null) {
+
+            if (!session.isClosed()) {
+                session.closeAndClearTokenInformation();
+                Json.getJson("http://demostandouter.zerouno.it/logout",MainActivity.httpclient);
+                AT=null;
+                //clear your preferences if saved
+            }
+        } else {
+
+            session = new Session(context);
+            Session.setActiveSession(session);
+            Json.getJson("http://demostandouter.zerouno.it/logout",MainActivity.httpclient);
+            AT=null;
+
+            session.closeAndClearTokenInformation();
+                //clear your preferences if saved
+            
+
+        }
+
+    }
+	 
+    @Override
+    public void onResume() {
+        super.onResume();
+        
+        // For scenarios where the main activity is launched and user
+		// session is not null, the session state change notification
+		// may not be triggered. Trigger it if it's open/closed.
+		session = Session.getActiveSession();
+		if (session != null &&
+				(session.isOpened() || session.isClosed()) ) {
+			    onSessionStateChange(session, session.getState(), null);
+		}
+		if(session.isOpened()){
+			Log.i(TAG, "hi.isOpened");
+			
+			AT=session.getAccessToken();
+			Log.i("zzzssszzzzzzzz",AT);
+			//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/fbaccess?accessToken="+Login.AT,MainActivity.httpclient).toString());
+			// postData();
+			//Log.i("zzzssszzzzzzzz",Json.getJson("https://graph.facebook.com/me?access_token="+AT+"&method=GET",MainActivity.httpclient).getString("username"));
+			
+		}
+		if(session.isClosed()){
+			Log.i(TAG, "hi.");
+			x=false;
+		}
+		
+        uiHelper.onResume();
+    }
+    
+    public void loginsfb(){
+		Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/fbaccess?accessToken="+Login.AT,MainActivity.httpclient).toString());
+
+    	MainActivity.loginoperas();
+		
+		
+	//	Log.i("id",Json.getJson("http://www.standouter.com/login_status.json").toString());
+		
+		//Intent y = new Intent();
+        //y.setClass(Login.this,  MainActivity.class);
+        
+        //startActivity(y);
+        
+         finish();
+         overridePendingTransition(R.anim.activity_open,R.anim.activity_close);
+		x=true;
+    }
+    
+    
+    
+   
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        uiHelper.onSaveInstanceState(outState);
+    }
+    
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+    	if (state.isOpened()) {
+    		Log.i(TAG, "Logged in...");
+    		
+    		
+
+        } else if (state.isClosed()) {
+        	Log.i(TAG, "Logged out...");
+        }
+    }
+    
+
+}

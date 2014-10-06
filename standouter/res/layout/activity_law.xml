@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+   android:background="#000000"
+    tools:context=".Law" >
+    
+    
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            
+              
+              
+              
+              <ImageView
+              android:id="@+id/lawlego"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              
+             />
+              <ImageView
+              android:id="@+id/lawgoback"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              
+             />     
+        </FrameLayout>
+   <LinearLayout
+       
+      
+        android:layout_width="match_parent"
+       android:layout_height="fill_parent"
+       android:orientation="vertical"
+       android:paddingBottom="@dimen/activity_vertical_margin"
+       android:paddingLeft="@dimen/activity_horizontal_margin"
+       android:paddingRight="@dimen/activity_horizontal_margin"
+       android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Community Guidelines"
+        android:textColor="#ffffff" 
+        android:textSize="25dp"/>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textlaw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" 
+                 android:textColor="#ffffff"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/canclebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I don't accppt it." 
+             android:textColor="#ffffff"/>
+
+        <Button
+            android:id="@+id/okbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ok, I accept it." 
+             android:textColor="#ffffff"/>
+    </LinearLayout>
+
+  
+    </LinearLayout>
+
+</LinearLayout>

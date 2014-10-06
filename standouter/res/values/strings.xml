@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">standouter</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_splash">Standouter</string>
+    <string name="app_id">393395497452531</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_info">Info</string>
+    <string name="title_activity_upload">Upload</string>
+    <string name="title_activity_choosefile">Choosefile</string>
+    <string name="title_activity_cameradiv">Cameradiv</string>
+    <string name="title_activity_law">Law</string>
+    <string name="appsite">http://www.standouter.com</string>
+  <string name="xlistview_header_hint_normal">Pull down to refresh</string>
+    <string name="xlistview_header_hint_ready">Release to refresh</string>
+    <string name="xlistview_header_hint_loading">On loading...</string>
+    <string name="xlistview_header_last_time">Last updated：</string>
+    <string name="xlistview_footer_hint_normal">Load more...</string>
+    <string name="xlistview_footer_hint_ready">Release to load more</string>
+</resources>

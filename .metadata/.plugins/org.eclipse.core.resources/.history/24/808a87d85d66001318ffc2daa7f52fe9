@@ -1,0 +1,1223 @@
+package com.example.standouter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.krislq.sliding.beans.RowItem;
+import com.krislq.sliding.beans.inforowitem;
+import com.squareup.picasso.Picasso;
+
+import adapter.Contestadapter;
+import adapter.infoitemadapter;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.PixelFormat;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.View;
+import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+import android.widget.AbsListView.OnScrollListener;
+
+public class Profile extends Activity {
+	
+	String uid;
+	
+   private Contestadapter adapter;
+	
+	
+	
+	
+	public static VideoView videoview;
+	public static boolean isplay=false;
+	public static boolean ispause=false;
+	public static boolean  isheng;
+	public static ProgressBar buffer;
+	private String vdpath;
+	private int vidtime;
+	String jsoncode;
+	static ImageView contest1;
+	static public int listno;
+	
+	public static ListView listView;
+	
+	static public FragmentTransaction fragmentTransaction;
+    
+    static public ImageView contestheader;
+    
+    
+    /********************
+     * 
+     */
+    
+    private int visibleLastIndex = 0;   //最后的可视项索引  
+    private int visibleItemCount;       // 当前窗口可见项总数 
+    private View loadMoreView; 
+   
+ 
+    private Handler handler = new Handler();  
+    
+    private int[] location={-1,-1};
+   
+    private String[] titles = new String[] { "506520975","506520975","506520975","506520975","506520975"
+           };
+    private String[] VID = new String[] { "506520975",
+            "07026746", "513736767", "516943231","524083761" };
+
+    private String[] images = { "http://i1.ytimg.com/vi/gsljTRm8a9Y/mqdefault.jpg",
+  	 "http://i1.ytimg.com/vi/fJIUeH3C7Wc/mqdefault.jpg",  "http://i1.ytimg.com/vi/CDs60V9LF2w/mqdefault.jpg",  "http://i1.ytimg.com/vi/q7JtlXfA9_g/mqdefault.jpg", "http://i1.ytimg.com/vi/gsljTRm8a9Y/mqdefault.jpg" };
+    private  String[] vidpath={"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4",
+	                                "http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	   ,"http://twweeb.org/example/html5-video-tag/Yif-Magic.mp4"
+	                                 };
+    
+
+    private List<RowItem> rowItems;
+    private int positionzhang;
+    private ProgressBar loadMorepb;
+    private TextView loadmoretext;
+    private JSONObject jsonobject;
+    List< inforowitem> InforItems;
+	
+	
+	/************************************************/
+	
+	public static JSONObject uidjson;
+	LinearLayout infolay;
+	FrameLayout otherlay;
+	SlidingMenu sm ;
+	static Profile contest;
+
+	private int[] votecont=new int[5];
+
+	
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/********************************************************************/
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//for full screnn
+		//etRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+		getWindow().setFormat(PixelFormat.TRANSLUCENT);
+		setContentView(R.layout.activity_profile);
+		/***************************************************/
+
+		/***********************************************************
+		 * 
+		 */
+		Bundle bData = this.getIntent().getExtras();
+		uid=bData.getString("uid");
+		//uid=Json.getJson("http://demostandouter.zerouno.it/video/videoinfo?ri="+vid,MainActivity.httpclient).getString("ownerId");
+		uidjson=Json.getJson("http://demostandouter.zerouno.it/artist/artistinfo?ai="+uid,MainActivity.httpclient);
+		
+		contest=Profile.this;
+		
+		buffer=(ProgressBar)findViewById(R.id.profilebuffer);
+        // buffer.setX(widthz/2-80);
+         buffer.setMax(10);
+         buffer.setVisibility(View.GONE);
+		
+		 videoview=(VideoView)this.findViewById(R.id.profilevideoView);
+	       FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(MainActivity.widthz, MainActivity.widthz*9/16);
+	       videoview.setLayoutParams(lp);
+	       videoview.setMinimumHeight(MainActivity.widthz*9/16);
+	       videoview.setMinimumWidth(MainActivity.widthz);
+	        
+	        videoview.setVisibility(View.INVISIBLE);
+	        
+	        videoview.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+				
+				
+
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					
+					// TODO Auto-generated method stub
+					videoview.stopPlayback();
+					videoview.setVisibility(View.INVISIBLE);
+					buffer.setVisibility(View.INVISIBLE);
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+					isplay=false;
+				}
+			});
+	        videoview.setOnPreparedListener(new OnPreparedListener(){
+
+				@Override
+				public void onPrepared(MediaPlayer arg0) {
+					// TODO Auto-generated method stub
+					Toast toast = Toast.makeText(Profile.this,
+	    	                "ok",
+	    	                Toast.LENGTH_SHORT);
+					buffer.setVisibility(View.INVISIBLE);
+	    	        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+	    	        toast.show();
+				}
+	        	
+	        });
+	        
+			
+				
+		
+		
+				
+			
+		 listView = (ListView)this.findViewById(R.id.profilelistView);
+		  loadMoreView = getLayoutInflater().inflate(R.layout.load_more, null);  
+	     
+	      loadMorepb=(ProgressBar)loadMoreView.findViewById(R.id.progressBarload);
+	      loadmoretext=(TextView)loadMoreView.findViewById(R.id.loadmoretext);
+	      loadMorepb.setVisibility(View.INVISIBLE);
+	      listView.addFooterView(loadMoreView);  
+	      
+	      loadlistview("http://demostandouter.zerouno.it/video/search?ss=artist&so=most_voted&sp="+uid);
+	  
+		
+		
+		/********************************************************************/
+		
+		
+		
+		
+		
+		infolay=(LinearLayout)this.findViewById(R.id.infolay);
+		otherlay=(FrameLayout)this.findViewById(R.id.otherlay);
+		
+		initprofilesmint();
+		
+		
+		
+		
+		
+		/***********************************************************
+		 * for header
+		 */
+		
+		ImageView contestheader = (ImageView)this.findViewById(R.id.profileheader);
+	     contestheader.setLayoutParams(new FrameLayout.LayoutParams( MainActivity.widthz,MainActivity.widthz/4
+               ));
+	     Picasso.with(this).load(R.drawable.shadowvd). resize(MainActivity.widthz, MainActivity.widthz/4). into(contestheader);
+	     
+	     ImageView backheader=(ImageView)this.findViewById(R.id.profileback);
+	     backheader.setLayoutParams(new FrameLayout.LayoutParams( MainActivity.widthz/4/180*124,MainActivity.widthz/4
+               ));
+	     backheader.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+				
+			}
+		});
+	     
+	     
+	     Picasso.with(this).load(R.drawable.arroww). resize( MainActivity.widthz/4/180*124, MainActivity.widthz/4). into( backheader);
+	     
+	     ImageView menuheader=(ImageView)this.findViewById(R.id.profilemenuheader);
+	     menuheader.setLayoutParams(new FrameLayout.LayoutParams( MainActivity.widthz/4/180*124,MainActivity.widthz/4
+               ));
+	     menuheader.setX(MainActivity.widthz- MainActivity.widthz/4/180*124);
+	     menuheader.setOnClickListener(new View.OnClickListener() {
+			
+			
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				sm.toggle();
+				
+			}
+		});
+	     Picasso.with(this).load(R.drawable.menuwhite). resize( MainActivity.widthz/4/180*124, MainActivity.widthz/4). into(menuheader);
+	    
+	     ImageView befans=(ImageView)this.findViewById(R.id.befans);
+	     befans.setLayoutParams(new FrameLayout.LayoutParams(MainActivity. widthz/4,MainActivity.widthz/4
+                 ));
+	     befans.setX(MainActivity.widthz- MainActivity.widthz/4/180*124-MainActivity.widthz/4);
+	     befans.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						Profile.this);
+		 
+					alertDialogBuilder.setTitle("Be a fan");
+		 
+					// set dialog message
+					try {
+						alertDialogBuilder
+							.setMessage("You will become a fan of"+uidjson.getString("artName"))
+							.setCancelable(false)
+							.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									// if this button is clicked, close
+									// current activity
+									try {
+										Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/befan?ui="+MainActivity.jsonlateoginst.getString("registrationId")+"&ai="+uid,MainActivity.httpclient).toString());
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
+								}
+							  })
+							.setNegativeButton("No",new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,int id) {
+									// if this button is clicked, just close
+									// the dialog box and do nothing
+									dialog.cancel();
+								}
+							});
+						AlertDialog alertDialog = alertDialogBuilder.create();
+						 
+						// show it
+						alertDialog.show();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		 
+						// create alert dialog
+						
+			}
+		});
+	     Picasso.with(this).load(R.drawable.befan). resize( MainActivity.widthz/4/180*124, MainActivity.widthz/4). into(befans);
+	     
+	     
+	     TextView headertitle=(TextView)this.findViewById(R.id.headername);
+	     try {
+			headertitle.setText(uidjson.getString("artName"));
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
+			
+			
+	     /***********************************************************
+			 * 
+			 */
+	     
+	     
+	     /***********************************************************
+			 * info
+			 
+		*/
+		
+		
+		try {
+			
+			ImageView photo=(ImageView)this.findViewById(R.id.profilephoto);
+			
+			Picasso.with(this).load("http://demostandouter.zerouno.it"+uidjson.getString("profileImageUrl")).into(photo);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TextView nickname=(TextView)this.findViewById(R.id.nickname);
+		TextView city=(TextView)this.findViewById(R.id.city);
+		TextView bio=(TextView)this.findViewById(R.id.biography);
+		
+		try {
+			
+			nickname.setText("Name: "+Profile.uidjson.getString("nickname"));
+			city.setText("City: "+Profile.uidjson.getString("city"));
+			bio.setText(Profile.uidjson.getString("biography"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 /**********************************************************
+		 * 
+		 */
+     
+
+	     Timer timer = new Timer(true);
+	        
+        timer.schedule(new timerTask(), 1000, 1000);
+		
+		
+		
+		
+		
+	}
+	
+	public void initprofilesmint(){
+		sm = new SlidingMenu(this);
+		sm = new SlidingMenu(this);
+		sm.setMode(SlidingMenu.RIGHT);
+	    sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN); 
+        sm.setShadowWidth(0);
+        sm.setShadowDrawable(R.drawable.shadow);
+        sm.setBehindOffset(MainActivity.widthz/4*3);
+        sm.setFadeDegree(0.35f);
+        //设置slding menu的几种手势模式
+        //TOUCHMODE_FULLSCREEN 全屏模式，在content页面中，滑动，可以打开sliding menu
+        //TOUCHMODE_MARGIN 边缘模式，在content页面中，如果想打开slding ,你需要在屏幕边缘滑动才可以打开slding menu
+        //TOUCHMODE_NONE 自然是不能通过手势打开啦
+        sm.attachToActivity(this, SlidingMenu.TOUCHMODE_FULLSCREEN);
+        sm.setMenu(R.layout.profilemenu);
+        Profile.this.infolay.setVisibility(View.VISIBLE);
+		Profile.this.otherlay.setVisibility(View.INVISIBLE);
+		
+		contest1=(ImageView)this.findViewById(R.id.profilemenuphoto);
+        contest1.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+                ));
+       
+        try {
+			Picasso.with(this).load("http://demostandouter.zerouno.it"+uidjson.getString("profileImageUrl")).into(contest1);
+		} catch (JSONException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+        try {
+			if(Json.getJson("http://demostandouter.zerouno.it/login_status.json",MainActivity.httpclient).getString("authenticated").equals("true")){
+				//Log.i("zzzzzzzzzzzz",Json.getJson("https://graph.facebook.com/me?access_token="+Login.AT+"&method=GET&fields=picture.type(large)").getJSONObject("picture").getJSONObject("data").getString("url"));
+			
+				Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/login_status.json",MainActivity.httpclient).toString());
+			//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/userdata??ui=501",MainActivity.httpclient).toString());
+
+   //Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/fbaccess?accessToken="+Login.AT,MainActivity.httpclient).toString());
+}
+		} catch (JSONException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+				//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/login_status.json",MainActivity.httpclient).toString());
+				//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/userdata.json?ui=481",MainActivity.httpclient).toString());
+			
+        contest1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+					
+						sm.toggle();
+						Profile.this.infolay.setVisibility(View.VISIBLE);
+						Profile.this.otherlay.setVisibility(View.INVISIBLE);
+			}
+		});
+        
+        ImageView infomenu = (ImageView)this.findViewById(R.id.infomenu);
+
+        infomenu.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+                ));
+        infomenu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Profile.this.infolay.setVisibility(View.VISIBLE);
+				Profile.this.otherlay.setVisibility(View.INVISIBLE);
+
+				sm.toggle();
+				
+			}
+		});
+	   	Picasso.with(this).load(R.drawable.cocacola). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(infomenu);
+
+        
+        ImageView portfoliomenu = (ImageView)this.findViewById(R.id.portfoliomenu);
+        portfoliomenu.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+                ));
+        portfoliomenu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Profile.this.infolay.setVisibility(View.INVISIBLE);
+				Profile.this.otherlay.setVisibility(View.VISIBLE);
+				 loadlistview("http://demostandouter.zerouno.it/video/search?ss=artist&so=most_recent&sp="+uid);
+				sm.toggle();
+				
+			}
+		});
+	   	Picasso.with(this).load(R.drawable.goandfun). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(portfoliomenu);
+
+        
+        ImageView fanmenu = (ImageView)this.findViewById(R.id.fansmenu);
+        fanmenu.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+                ));
+        fanmenu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Profile.this.infolay.setVisibility(View.INVISIBLE);
+				Profile.this.otherlay.setVisibility(View.VISIBLE);
+				JSONObject jsonfan = Json.getJson("http://demostandouter.zerouno.it/fansof?ui="+uid,MainActivity.httpclient);
+				int totlefanno = 0;
+				try {
+					totlefanno = jsonfan.getInt("total");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				InforItems = new ArrayList<inforowitem>();   
+				Log.i("zsdf",totlefanno+""); 
+				rowItems = new ArrayList<RowItem>();   
+				for(int i=0; i<totlefanno;i++){
+					try {
+						
+						 
+					String	imagesfan="http://demostandouter.zerouno.it"+jsonfan.getJSONArray("items").getJSONObject(i).getString("profileImageUrl");
+					String	titlesfan=jsonfan.getJSONArray("items").getJSONObject(i).getString("name");
+					String	desfan=jsonfan.getJSONArray("items").getJSONObject(i).getString("nickname");
+					inforowitem Inforowitem=new inforowitem(imagesfan, titlesfan, desfan);
+					InforItems.add(Inforowitem);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				infoitemadapter infoadapter = new  infoitemadapter(Profile.this, InforItems,Profile.this);
+		        listView.setAdapter(infoadapter);
+				
+				
+				
+				Log.i("zsdf",jsonfan.toString()); 
+				Log.i("zsdf",totlefanno+""); 
+				 
+				Log.i("zsdf",listView.getCount()+""); 
+		            
+		          
+				//loadlistview("http://demostandouter.zerouno.it/video/search?ss=artist&so=most_voted&sp="+uid);
+				sm.toggle();
+				
+			}
+		});
+	   	Picasso.with(this).load(R.drawable.adidas). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(fanmenu);
+
+        
+        
+        ImageView playlistmenu = (ImageView)this.findViewById(R.id.playlistmenu);
+       playlistmenu.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+                ));
+       playlistmenu.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Profile.this.infolay.setVisibility(View.INVISIBLE);
+				Profile.this.otherlay.setVisibility(View.VISIBLE);
+				String jsonstring= "{\"totalResults\":"+MainActivity.votecontno+",\"items\":[" +MainActivity.votejsonstring+"]}";
+				Log.i("jsonstring",jsonstring);
+				try {
+					loadlistview2(new JSONObject(jsonstring));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 //loadlistview("http://demostandouter.zerouno.it/video/search?ss=artist&so=most_voted&sp="+uid);
+				sm.toggle();
+				
+			}
+		});
+	   	Picasso.with(this).load(R.drawable.nike). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(playlistmenu);
+
+       
+        ImageView logoutmenu = (ImageView)this.findViewById(R.id.logoutmenu);
+       logoutmenu.setLayoutParams ( new LinearLayout.LayoutParams( MainActivity.widthz/4,MainActivity.widthz/4
+               ));
+       
+       
+       try {
+		if(MainActivity.jsonlateoginst.getString("authenticated").equals("true")){
+		   	//Log.i("zzzzzzzzzzzz",Json.getJson("https://graph.facebook.com/me?access_token="+Login.AT+"&method=GET&fields=picture.type(large)").getJSONObject("picture").getJSONObject("data").getString("url"));
+		   	//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/fbaccess?accessToken="+Login.AT,httpclient).toString());
+			   MainActivity.LOGINSTATE=1;
+			   	Picasso.with(this).load(R.drawable.logout). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(logoutmenu);
+
+		   	//Log.i("zz",jsonlateoginst.toString());
+		   	MainActivity.loginoperas();
+		   }
+		   else
+		   {
+		   	
+		   	Picasso.with(this).load(R.drawable.login). resize(MainActivity.widthz/4, MainActivity.widthz/4). into(logoutmenu);
+		   }
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+       logoutmenu.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			try {
+				if(MainActivity.jsonlateoginst.getString("authenticated").equals("true")){
+				   	//Log.i("zzzzzzzzzzzz",Json.getJson("https://graph.facebook.com/me?access_token="+Login.AT+"&method=GET&fields=picture.type(large)").getJSONObject("picture").getJSONObject("data").getString("url"));
+				   	//Log.i("zz",Json.getJson("http://demostandouter.zerouno.it/fbaccess?accessToken="+Login.AT,httpclient).toString());
+					   MainActivity.LOGINSTATE=1;
+					   Login.callFacebookLogout(Profile.this);
+					   MainActivity. httpclient = new DefaultHttpClient(); // for port 80 requests!
+					   MainActivity.LOGINSTATE=0;
+					   sm.toggle();
+					   finish();
+						
+				        overridePendingTransition(R.anim.activity_open_right,R.anim.activity_close_right);
+				        
+
+
+				   	//Log.i("zz",jsonlateoginst.toString());
+				   }
+				   else
+				   {
+					   MainActivity.LOGINSTATE=0;
+						Intent intent = new Intent(Profile.this, Login.class);
+						Profile.this.startActivity(intent);
+						//MainActivity.this.finish();
+				        overridePendingTransition(R.anim.activity_open,R.anim.activity_close);
+						sm.toggle();
+						finish();
+				   }
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	});
+	}
+	
+
+	
+	void loadlistview2(JSONObject jsonobject3 ){
+		
+		jsonobject=jsonobject3;
+		
+		listno=20;
+		
+		
+		 listView.setAdapter(null);
+
+	
+		 try {
+				listno=jsonobject.getInt("totalResults");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		Log.i("","NO IS "+listno);
+		
+		
+		int smalltno;
+		if(listno<5) smalltno=listno;
+		else smalltno=5;
+		for(int i=0;i<smalltno;i++){
+      		try {
+					images[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("imageUrl320");
+					titles[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("ownerNickname");
+					vidpath[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("videoUrl480");
+					VID[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("id");
+					votecont[i]=jsonobject.getJSONArray("items").getJSONObject(i).getInt("votesCount");
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+      	}
+      	
+     
+       rowItems = new ArrayList<RowItem>();
+      
+       Log.i("x",""+rowItems.size());
+       Log.i("xy",""+listView.getCount());
+        for (int i = 0; i < smalltno; i++) {
+            RowItem item = new RowItem(images[i], titles[i], vidpath[i],VID[i],votecont[i]);
+            rowItems.add(item);
+        }
+       
+        adapter = new  Contestadapter(this, rowItems,this);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+			
+     
+
+			
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+		            long id) {
+				
+				
+				listView.getLocationInWindow(location);
+				// TODO Auto-generated method stub
+				
+		    		if(position!=positionzhang) vidtime=0;
+		    		Log.i("",""+position+","+positionzhang);
+		    		
+			    	int a = 0;			        
+			        if(isplay==false){
+			    		if(position!=positionzhang) vidtime=0;
+			    		Log.i("",""+position+","+positionzhang);
+			    		isplay=true;
+			    		int Pos[]={-1,-1};
+				    	view.getLocationOnScreen(Pos);
+				        Toast toast = Toast.makeText(view.getContext(),
+				                "Item " + (position + 1+a*5) + ": " + rowItems.get(position)+"Position:"+Pos[1]+"xx"+location[1],
+				                Toast.LENGTH_SHORT);
+				        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				        toast.show();
+				        
+				        Uri uri = Uri.parse(adapter.getItemdesc(position));
+				       videoview.setVideoURI(uri);
+				       vdpath=adapter.getItemdesc(position);
+				        //MainActivity.vidpath=vidpath[position+a*5];
+				       videoview.setMinimumHeight(MainActivity.widthz*9/16);
+				        videoview.setMinimumWidth(MainActivity.widthz);
+				        videoview.requestFocus();
+				        videoview.setY(Pos[1]-location[1]);
+				      buffer.setY(Pos[1]-100);
+				       videoview.seekTo(vidtime);
+				       videoview.start();
+				         videoview.setVisibility(View.VISIBLE);
+				       buffer.setVisibility(View.VISIBLE);
+				        
+				        
+				        
+				        positionzhang=position;
+			    	}
+			    	else{
+			    		if(position==positionzhang)
+			    		{
+			    			videoview.pause();
+			    			vidtime=videoview.getCurrentPosition();
+						//videoview.setVisibility(View.INVISIBLE);
+			    			isplay=false;
+			    		}
+			    		else
+			    		{
+			    			vidtime=0;
+			        		Log.i("",""+position+","+positionzhang);
+			        		isplay=true;
+			        		int Pos[]={-1,-1};
+			    	    	view.getLocationOnScreen(Pos);
+			    	        Toast toast = Toast.makeText(view.getContext(),
+			    	                "Item " + (position + 1+a*5) + ": " + rowItems.get(position)+"Position:"+Pos[1],
+			    	                Toast.LENGTH_SHORT);
+			    	        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+			    	        toast.show();
+			    	        
+			    	        Uri uri = Uri.parse(adapter.getItemdesc(position));
+					        videoview.setVideoURI(uri);
+					        vdpath=adapter.getItemdesc(position);
+			    	       //MainActivity.vidpath=vidpath[position+a*5];
+			    	       videoview.setMinimumHeight(MainActivity.widthz*9/16);
+			    	        videoview.setMinimumWidth(MainActivity.widthz);
+			    	        videoview.requestFocus();
+			    	       videoview.setY(Pos[1]-location[1]);
+			    	        buffer.setY(Pos[1]-100);
+			    	       videoview.seekTo(vidtime);
+			    	       videoview.start();
+			    	       videoview.setVisibility(View.VISIBLE);
+			    	      buffer.setVisibility(View.VISIBLE);
+			    	        
+			    	        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+			    	        positionzhang=position;
+			    		}
+				}
+
+			        
+			
+        	
+        }});
+        listView.setOnScrollListener(new OnScrollListener(){
+
+        	 @Override  
+        	    public void onScroll(AbsListView view, int firstVisibleItem, final int visibleItemCount, int totalItemCount) {  
+        	        Profile.this.visibleItemCount = visibleItemCount;  
+        	        visibleLastIndex = firstVisibleItem + visibleItemCount - 1; 
+        	       
+             	           
+        	        
+        	    }  
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {  
+		        int itemsLastIndex = adapter.getCount() - 1;    //数据集最后一项的索引  
+		        final int lastIndex = itemsLastIndex + 1;             //加上底部的loadMoreView项  
+		        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE && visibleLastIndex == lastIndex) {  
+		            //如果是自动加载,可以在这里放置异步加载数据的代码  
+		            Log.i("LOADMORE", "loading...");  
+		            Log.i("",lastIndex+"");
+		            loadmoretext.setText("Loadind...");
+		            loadMorepb.setVisibility(View.VISIBLE);
+		           // loadMoreButton.setText("loading...");   //设置按钮文字loading  
+		            handler.postDelayed(new Runnable() {  
+		                @Override  
+		                public void run() {  
+		                    if(lastIndex<listno){ 
+		                    loadData();  
+		                      
+		                    adapter.notifyDataSetChanged(); //数据集变化后,通知adapter  
+		                    listView.setSelection(visibleLastIndex - visibleItemCount + 1); //设置选中项  
+		                    loadmoretext.setText("Load More");
+		                    } else{
+		                    	 loadmoretext.setText("All Loaded");
+		                    }
+		                  
+		                    loadMorepb.setVisibility(View.INVISIBLE);
+		                   
+		                   // loadMoreButton.setText("load more");    //恢复按钮文字 
+		                   
+		                }  
+		            }, 2000);  
+		           
+		        }  
+		        switch(scrollState) { 
+	            case SCROLL_STATE_FLING: 
+	                //Log.i("Scroll State","滾動中...");
+	                videoview.stopPlayback();
+	                videoview.setVisibility(View.INVISIBLE);
+	                MainActivity.buffer.setVisibility(View.INVISIBLE);
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+	               isplay=false;
+	                break; 
+	            case SCROLL_STATE_IDLE: 
+	               // Log.i("Scroll State","滾動停止...");
+	            	
+	                break; 
+	            case SCROLL_STATE_TOUCH_SCROLL: 
+	               // Log.i("Scroll State","手指滾動...");
+	            	videoview.stopPlayback();
+	            	 videoview.setVisibility(View.INVISIBLE);
+	            	buffer.setVisibility(View.INVISIBLE);
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+	            	isplay=false;
+	                break; 
+	            }
+		        
+		        
+		    }  
+        	
+        });
+        Log.i("x",""+rowItems.size());
+        Log.i("xy",""+listView.getCount());
+	}
+	public void loadMore(View view) {  
+	       // loadMoreButton.setText("loading...");   //设置按钮文字loading  
+	    	loadMorepb.setVisibility(View.VISIBLE);
+	        handler.postDelayed(new Runnable() {  
+	            @Override  
+	            public void run() {  
+	                  
+	                loadData();  
+	                  
+	                adapter.notifyDataSetChanged(); //数据集变化后,通知adapter  
+	                listView.setSelection(visibleLastIndex - visibleItemCount + 1); //设置选中项  
+	                loadMorepb.setVisibility(View.INVISIBLE) ;
+	                //loadMoreButton.setText("load more");    //恢复按钮文字  
+	            }  
+	        }, 2000);  
+	    }  
+	      
+	    /** 
+	     * 模拟加载数据 
+	     */  
+	    private void loadData() {  
+	        int count = adapter.getCount();  
+	        String as = null;
+	        String bs = null;
+	        String cs = null;
+	        String ds = null;
+	        int es=0;
+	        
+	        for (int i = count; i < count + 5; i++) { 
+	        	if(i<listno){ 
+	        	try {
+					as=jsonobject.getJSONArray("items").getJSONObject(i).getString("imageUrl320");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					bs=jsonobject.getJSONArray("items").getJSONObject(i).getString("ownerNickname");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					cs=jsonobject.getJSONArray("items").getJSONObject(i).getString("videoUrl480");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					ds=jsonobject.getJSONArray("items").getJSONObject(i).getString("id");
+					es=jsonobject.getJSONArray("items").getJSONObject(i).getInt("votesCount");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+	        	RowItem item = new RowItem(as, bs, cs,ds,es);
+	        	
+	            adapter.addItem(item);
+	        }
+	        }
+	    }
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.profile, menu);
+		return true;
+	}
+	public void finish() {  
+	    // TODO Auto-generated method stub  
+	    super.finish(); 
+	   super.onDestroy();
+	    //关闭窗体动画显示  
+	    this.overridePendingTransition(R.anim.activity_open_right,R.anim.activity_close_right);  
+	}
+	
+	public void onConfigurationChanged(Configuration newConfig) {  
+	      super.onConfigurationChanged(newConfig);  
+	      Log.i("zhang"," == onConfigurationChanged");  
+	      if(this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE)
+	      {  
+	    	  
+	         
+	    	  if(isplay||ispause){
+	          Log.i("info", "landscape"); // 横屏 
+	          videoview.pause();
+	        
+	          
+	          vidtime=videoview.getCurrentPosition();
+	          //videoview.stopPlayback();
+				Log.i("zzz","hengping");
+	         
+	          Intent x = new Intent();
+	          x.setClass(Profile.this, Play.class);
+	    		Bundle bundle=new Bundle();  
+	    	  bundle.putStringArray("pic", MainActivity.adapter.getnearpic(positionzhang));
+	    	  bundle.putStringArray("des", MainActivity.adapter.getneardec(positionzhang));
+	          bundle.putString("result1",vdpath); 
+	          bundle.putString("time", Integer.toString(vidtime));
+	          x.putExtras(bundle); 
+	          startActivity(x);
+	          
+			   isheng=true;
+			   
+	          //自定义函数处理配置改变事件
+	    	  }
+	      } 
+	      if(this.getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT)
+	      { 
+	    	  vidtime=Play.vidtime;
+	    	  if(isplay){
+	    		  videoview.seekTo(vidtime);
+	    		  videoview.start();
+	    	  }
+	      }
+	    }
+	 public class timerTask extends TimerTask
+	    {
+	      public void run()
+	      {
+	    	  
+	    	 
+	    	  
+	    	  //Log.i("text",""+videoview.getBufferPercentage());
+	    	  /*
+	         ActivityManager am= (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+	          
+	          List<RunningTaskInfo> runningTasks = am.getRunningTasks(1);
+	          
+	          RunningTaskInfo rti = runningTasks.get(0);
+	          ComponentName component = rti.topActivity;
+	          String aw=component.getClassName();
+	          Log.i("tag",aw );
+	          Log.d("tag",bw);
+	          if(aw==bw){
+	        	  Log.i("tag","si" );
+	          }
+	          else{
+	        	  
+	        	  videoview.stopPlayback();
+					videoview.setVisibility(View.INVISIBLE);
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+					isplay=false;
+					ispause=false;
+					
+					 Log.i("tag","no" );
+	          }
+	          
+	         */
+	    	  if(isplay){
+	    		  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+	    	  }
+	    	  else{
+	    		  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+	    	  }
+	      }
+	    };
+	    
+	    void loadlistview(String jsoncode2){
+	    	listView.destroyDrawingCache();
+			jsoncode=jsoncode2;
+			jsonobject=Json.getJson(jsoncode,MainActivity.httpclient);
+			
+			listno=20;
+			
+
+			
+			try {
+				listno=Json.getJson(jsoncode,MainActivity.httpclient).getInt("totalResults");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Log.i("","NO IS "+listno);
+			
+			int smalltno;
+			if(listno<5) smalltno=listno;
+			else smalltno=5;
+			for(int i=0;i<smalltno;i++){
+	      		try {
+						images[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("imageUrl320");
+						titles[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("ownerNickname");
+						vidpath[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("videoUrl480");
+						VID[i]=jsonobject.getJSONArray("items").getJSONObject(i).getString("id");
+						votecont[i]=jsonobject.getJSONArray("items").getJSONObject(i).getInt("votesCount");
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	      	}
+	      	
+	     
+	       rowItems = new ArrayList<RowItem>();
+	        for (int i = 0; i < smalltno; i++) {
+	            RowItem item = new RowItem(images[i], titles[i], vidpath[i],VID[i],votecont[i]);
+	            rowItems.add(item);
+	        }
+	       
+	        adapter = new  Contestadapter(this, rowItems,this);
+	        listView.setAdapter(adapter);
+	        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+				
+	     
+
+				
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position,
+			            long id) {
+					
+					
+					listView.getLocationInWindow(location);
+					// TODO Auto-generated method stub
+					
+			    		if(position!=positionzhang) vidtime=0;
+			    		Log.i("",""+position+","+positionzhang);
+			    		
+				    	int a = 0;			        
+				        if(isplay==false){
+				    		if(position!=positionzhang) vidtime=0;
+				    		Log.i("",""+position+","+positionzhang);
+				    		isplay=true;
+				    		int Pos[]={-1,-1};
+					    	view.getLocationOnScreen(Pos);
+					        Toast toast = Toast.makeText(view.getContext(),
+					                "Item " + (position + 1+a*5) + ": " + rowItems.get(position)+"Position:"+Pos[1]+"xx"+location[1],
+					                Toast.LENGTH_SHORT);
+					        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+					        toast.show();
+					        
+					        Uri uri = Uri.parse(adapter.getItemdesc(position));
+					       videoview.setVideoURI(uri);
+					       vdpath=adapter.getItemdesc(position);
+					        //MainActivity.vidpath=vidpath[position+a*5];
+					       videoview.setMinimumHeight(MainActivity.widthz*9/16);
+					        videoview.setMinimumWidth(MainActivity.widthz);
+					        videoview.requestFocus();
+					        videoview.setY(Pos[1]-location[1]);
+					      buffer.setY(Pos[1]-100);
+					       videoview.seekTo(vidtime);
+					       videoview.start();
+					         videoview.setVisibility(View.VISIBLE);
+					       buffer.setVisibility(View.VISIBLE);
+					        
+					        
+					        
+					        positionzhang=position;
+				    	}
+				    	else{
+				    		if(position==positionzhang)
+				    		{
+				    			videoview.pause();
+				    			vidtime=videoview.getCurrentPosition();
+							//videoview.setVisibility(View.INVISIBLE);
+				    			isplay=false;
+				    		}
+				    		else
+				    		{
+				    			vidtime=0;
+				        		Log.i("",""+position+","+positionzhang);
+				        		isplay=true;
+				        		int Pos[]={-1,-1};
+				    	    	view.getLocationOnScreen(Pos);
+				    	        Toast toast = Toast.makeText(view.getContext(),
+				    	                "Item " + (position + 1+a*5) + ": " + rowItems.get(position)+"Position:"+Pos[1],
+				    	                Toast.LENGTH_SHORT);
+				    	        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				    	        toast.show();
+				    	        
+				    	        Uri uri = Uri.parse(adapter.getItemdesc(position));
+						        videoview.setVideoURI(uri);
+						        vdpath=adapter.getItemdesc(position);
+				    	       //MainActivity.vidpath=vidpath[position+a*5];
+				    	       videoview.setMinimumHeight(MainActivity.widthz*9/16);
+				    	        videoview.setMinimumWidth(MainActivity.widthz);
+				    	        videoview.requestFocus();
+				    	       videoview.setY(Pos[1]-location[1]);
+				    	        buffer.setY(Pos[1]-100);
+				    	       videoview.seekTo(vidtime);
+				    	       videoview.start();
+				    	       videoview.setVisibility(View.VISIBLE);
+				    	      buffer.setVisibility(View.VISIBLE);
+				    	        
+				    	        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+				    	        positionzhang=position;
+				    		}
+					}
+
+				        
+				
+	        	
+	        }});
+	        listView.setOnScrollListener(new OnScrollListener(){
+
+	        	 @Override  
+	        	    public void onScroll(AbsListView view, int firstVisibleItem, final int visibleItemCount, int totalItemCount) {  
+	        	        Profile.this.visibleItemCount = visibleItemCount;  
+	        	        visibleLastIndex = firstVisibleItem + visibleItemCount - 1; 
+	        	       
+	             	           
+	        	        
+	        	    }  
+
+				@Override
+				public void onScrollStateChanged(AbsListView view, int scrollState) {  
+			        int itemsLastIndex = adapter.getCount() - 1;    //数据集最后一项的索引  
+			        final int lastIndex = itemsLastIndex + 1;             //加上底部的loadMoreView项  
+			        if (scrollState == OnScrollListener.SCROLL_STATE_IDLE && visibleLastIndex == lastIndex) {  
+			            //如果是自动加载,可以在这里放置异步加载数据的代码  
+			            Log.i("LOADMORE", "loading...");  
+			            Log.i("",lastIndex+"");
+			            loadmoretext.setText("Loadind...");
+			            loadMorepb.setVisibility(View.VISIBLE);
+			           // loadMoreButton.setText("loading...");   //设置按钮文字loading  
+			            handler.postDelayed(new Runnable() {  
+			                @Override  
+			                public void run() {  
+			                    if(lastIndex<listno){ 
+			                    loadData();  
+			                      
+			                    adapter.notifyDataSetChanged(); //数据集变化后,通知adapter  
+			                    listView.setSelection(visibleLastIndex - visibleItemCount + 1); //设置选中项  
+			                    loadmoretext.setText("Load More");
+			                    } else{
+			                    	 loadmoretext.setText("All Loaded");
+			                    }
+			                  
+			                    loadMorepb.setVisibility(View.INVISIBLE);
+			                   
+			                   // loadMoreButton.setText("load more");    //恢复按钮文字 
+			                   
+			                }  
+			            }, 2000);  
+			           
+			        }  
+			        switch(scrollState) { 
+		            case SCROLL_STATE_FLING: 
+		                //Log.i("Scroll State","滾動中...");
+		                videoview.stopPlayback();
+		                videoview.setVisibility(View.INVISIBLE);
+		                MainActivity.buffer.setVisibility(View.INVISIBLE);
+						//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+						//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		               isplay=false;
+		                break; 
+		            case SCROLL_STATE_IDLE: 
+		               // Log.i("Scroll State","滾動停止...");
+		            	
+		                break; 
+		            case SCROLL_STATE_TOUCH_SCROLL: 
+		               // Log.i("Scroll State","手指滾動...");
+		            	videoview.stopPlayback();
+		            	 videoview.setVisibility(View.INVISIBLE);
+		            	buffer.setVisibility(View.INVISIBLE);
+						//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+						//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		            	isplay=false;
+		                break; 
+		            }
+			        
+			        
+			    }  
+	        	
+	        });
+		}
+	   
+
+}

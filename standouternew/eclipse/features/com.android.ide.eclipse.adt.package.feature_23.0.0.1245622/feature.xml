@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.android.ide.eclipse.adt.package.feature"
+      label="ADT Package"
+      version="23.0.0.1245622"
+      provider-name="The Android Open Source Project"
+      plugin="com.android.ide.eclipse.adt.package">
+
+   <description url="http://developer.android.com">
+      Android Developer Tools
+   </description>
+
+   <copyright>
+      Copyright (C) 2007-2012 The Android Open Source Project
+   </copyright>
+
+   <license url="http://www.eclipse.org/org/documents/epl-v10.php">
+      Note:  kxml2-2.3.0.jar is under the BSD license rather ...
+   </license>
+
+   <url>
+      <update label="Android Update Site" url="https://dl-ssl.google.com/android/eclipse/"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.equinox.p2.user.ui"/>
+      <import feature="org.eclipse.help"/>
+      <import feature="org.eclipse.jdt"/>
+      <import feature="org.eclipse.cdt"/>
+      <import feature="org.eclipse.platform"/>
+      <import feature="org.eclipse.rcp"/>
+      <import feature="org.eclipse.egit"/>
+      <import feature="org.eclipse.egit.import"/>
+   </requires>
+
+   <plugin
+         id="com.android.ide.eclipse.adt.package"
+         download-size="326"
+         install-size="783"
+         version="23.0.0.1245622"/>
+
+</feature>

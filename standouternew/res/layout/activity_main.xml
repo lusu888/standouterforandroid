@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/shawdowwhite"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true" />
+
+    <com.standouter.standouternew.MyImageView
+        android:id="@+id/notipic"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="40dp"
+        android:focusable="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/headerlayout"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" >
+
+            <ImageView
+                android:id="@+id/headerimg"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <ImageView
+                android:id="@+id/imgmenuleftmain"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left" />
+
+            <ImageView
+                android:id="@+id/imgmenurightmain"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="right" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/contentlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <com.standouter.standouternew.XListView
+                android:id="@+id/listViewmain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:focusable="false" >
+            </com.standouter.standouternew.XListView>
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

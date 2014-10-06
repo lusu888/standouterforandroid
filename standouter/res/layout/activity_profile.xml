@@ -1,0 +1,199 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".Profile"
+    android:background="#000000"
+    >
+
+   
+     <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/proheadergroup"
+            >
+            
+            
+              <ImageView
+              android:id="@+id/profileheader"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#000000"
+              
+             />
+              <ImageView
+              android:id="@+id/profileback"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              
+             />
+
+              <TextView
+                  android:id="@+id/headername"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Large Text"
+                  android:textColor="#FFFFFF"
+                  android:layout_gravity="center"
+                  android:textAppearance="?android:attr/textAppearanceLarge" />
+               
+                 
+              <ImageView
+              android:id="@+id/profilemenuheader"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+           
+              
+             />
+                   
+             
+              
+             
+              
+            
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+       
+   <LinearLayout
+       android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:background="#000000"
+         android:orientation="vertical"
+        android:id="@+id/infolay" >
+        
+         <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"           
+            >
+           
+            
+             <ListView
+               android:id="@+id/lvctpro"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="#000000"
+               >
+               
+               
+           </ListView> 
+           <VideoView
+             android:id="@+id/vvctpro"
+            android:layout_width="match_parent"
+           android:layout_height="155dp" 
+           android:layout_gravity="center"
+             >
+                
+            </VideoView>        
+
+           <ProgressBar
+               android:id="@+id/bufferctpro"
+               style="?android:attr/progressBarStyleSmall"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
+               android:layout_gravity="center_horizontal" />
+            <ImageView
+               android:id="@+id/plusfan"
+               android:layout_width="40dp"
+               android:layout_height="40dp"
+               android:src="@drawable/plusfan"
+               android:layout_gravity="end"                             />
+           </FrameLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:background="#000000"
+       >
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" 
+        android:paddingBottom="@dimen/activity_vertical_margin"
+         android:paddingLeft="@dimen/activity_horizontal_margin"
+         android:paddingRight="@dimen/activity_horizontal_margin"
+         android:paddingTop="@dimen/activity_vertical_margin" 
+        >
+       
+
+           
+ 
+        
+        <TextView
+            android:id="@+id/nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:text="TextView" 
+            android:textSize="18dp">
+            
+        </TextView>        
+            <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:textColor="#ffffff"
+            android:text="TextView"
+            android:textSize="18dp" />
+        
+        <TextView
+            android:id="@+id/biography"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:textColor="#ffffff"
+            android:text="TextView"
+            android:textSize="18dp" />
+        
+
+        
+        
+    </LinearLayout>
+    
+
+       
+    </ScrollView>
+   
+</LinearLayout>
+        
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:background="#000000"
+            android:id="@+id/otherlay">
+       
+      
+            <ListView
+               android:id="@+id/profilelistView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="#000000"
+               >
+           </ListView>
+  
+            <VideoView
+             android:id="@+id/profilevideoView"
+            android:layout_width="match_parent"
+           android:layout_height="155dp" 
+           android:layout_gravity="center"
+             >
+                
+            </VideoView>        
+
+           <ProgressBar
+               android:id="@+id/profilebuffer"
+               style="?android:attr/progressBarStyleSmall"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
+               android:layout_gravity="center_horizontal" />
+
+           
+           
+        </FrameLayout>
+        </FrameLayout>
+
+        
+
+</LinearLayout>

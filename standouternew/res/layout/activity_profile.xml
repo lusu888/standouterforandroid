@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".Profile" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/headerlayoutprofile"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" >
+
+            <TextView
+                android:id="@+id/profiletile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="... ..."
+                android:textColor="#CD5223"
+                android:textSize="22dp" />
+
+            <ImageView
+                android:id="@+id/imgmenuleftprofile"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left"
+                android:clickable="true" />
+
+            <ImageView
+                android:id="@+id/imgmenurightprofile"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="right"
+                android:clickable="true" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/contentlayoutprofile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

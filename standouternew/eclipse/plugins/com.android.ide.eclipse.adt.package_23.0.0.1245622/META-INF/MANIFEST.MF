@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Built-By: android-build
+Eclipse-BundleShape: dir
+Bundle-Name: ADT Package
+Created-By: Apache Maven
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.platform,org.eclipse.equinox.app,org.eclip
+ se.ui.intro,org.eclipse.ui.workbench,org.eclipse.swt,org.eclipse.core
+ .runtime,org.eclipse.core.commands,org.eclipse.ui.forms,org.eclipse.j
+ face,com.android.ide.eclipse.adt
+Bundle-Vendor: The Android Open Source Project
+Build-Jdk: 1.6.0_45
+Bundle-Version: 23.0.0.1245622
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.android.ide.eclipse.adt.package;singleton:=tr
+ ue
+Archiver-Version: Plexus Archiver
+

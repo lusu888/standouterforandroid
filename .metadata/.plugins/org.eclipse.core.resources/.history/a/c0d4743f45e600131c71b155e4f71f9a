@@ -1,0 +1,94 @@
+package com.example.standouternew;
+
+import java.io.IOException;
+
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
+import android.view.Menu;
+import android.view.Window;
+
+public class SplashActivity extends Activity {
+
+	private Standouter qapp;
+	private DefaultHttpClient httpclient;
+	protected JSONObject channelJson;
+	protected JSONObject contestJson;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		/********************************************************************/
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);//
+		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//for full screnn
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//
+		getWindow().setFormat(PixelFormat.TRANSLUCENT);
+		setContentView(R.layout.activity_splash);
+		
+		
+		qapp=(Standouter)getApplication();
+		httpclient = new DefaultHttpClient(); // for port 80 requests!
+
+		qapp.sethttpclient(httpclient);
+		qapp.setwebaddress("http://apps-demostandouter.zerouno.it");
+		 Thread getjsonthread=new Thread(getjsonun);
+		 getjsonthread.start();
+	}
+	Runnable getjsonun=new Runnable(){
+
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				contestJson=qapp.getJson(qapp.getwebaddress()+"/contest/contestlist",qapp.httpclient );
+				channelJson=qapp.getJson(qapp.getwebaddress()+"/contest/channellist", qapp.httpclient);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				qapp.writeFileSdcardFile("/sdcard/contestjson.txt", contestJson.toString());
+				qapp.writeFileSdcardFile("/sdcard/channeljson.txt", channelJson.toString());
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			  Message msg = new Message();
+			  msg.what=1;
+			  gotomainhandler.sendMessage(msg);
+		}
+		
+		
+		
+	};
+
+	private Handler gotomainhandler=new Handler(){
+		 public void handleMessage(Message msg) {
+	            super.handleMessage(msg);
+	            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+	            SplashActivity.this.startActivity(intent);
+	            SplashActivity.this.finish();
+	            overridePendingTransition(R.anim.activity_open,R.anim.activity_close);
+	            
+		 }
+	};
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.splash, menu);
+		return true;
+	}
+
+}

@@ -1,0 +1,30 @@
+package com.example.standouternew;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Gravity;
+import android.view.Menu;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
+public class Profile extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_profile);
+		
+		FrameLayout headerlayout=(FrameLayout)this.findViewById(R.id.h);
+		LinearLayout.LayoutParams flp=new LinearLayout.LayoutParams( qapp.width,qapp.width/4);
+        flp.gravity=Gravity.CENTER_HORIZONTAL;
+        headerlayout.setLayoutParams(flp);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.profile, menu);
+		return true;
+	}
+
+}

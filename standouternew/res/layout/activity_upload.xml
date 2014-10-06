@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".Upload" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/headerlayoutupload"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" >
+
+            <ImageView
+                android:id="@+id/headerimgupload"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true" />
+
+            <ImageView
+                android:id="@+id/imgmenuleftupload"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/contentlayoutuplaod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

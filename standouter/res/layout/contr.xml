@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#88000000"
+    
+    
+     >
+    
+    <Gallery
+    android:id="@+id/filmlist2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:spacing="10dp"
+    android:layout_marginTop="10dp"
+    
+    
+    
+    />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dp" >
+
+        <Button
+            android:id="@+id/play2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/play" />
+
+        <SeekBar
+            android:id="@+id/seekbar2"
+           style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/thumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+             />
+    </LinearLayout>
+
+</LinearLayout>

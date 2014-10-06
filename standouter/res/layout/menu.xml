@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#000000"
+             >
+            
+       <ImageView
+          android:id="@+id/contest1"
+          android:layout_width="@dimen/icon_width"
+          android:layout_height="@dimen/icon_width"
+          
+          />
+       <ImageView
+          android:id="@+id/contest2"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+           <ImageView
+          android:id="@+id/contest3"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+            <ImageView
+          android:id="@+id/contest4"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+           />
+             <ImageView
+          android:id="@+id/contest5"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+              <ImageView
+          android:id="@+id/contest6"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+               <ImageView
+          android:id="@+id/contest7"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+                <ImageView
+          android:id="@+id/contest8"
+          android:layout_width="100dp"
+          android:layout_height="100dp"
+          />
+           
+        </LinearLayout>
+    </ScrollView>
+
+

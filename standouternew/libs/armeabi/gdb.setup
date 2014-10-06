@@ -1,0 +1,4 @@
+set solib-search-path /cygdrive/c/eclipse_workspace/workspace/CameraAccess3/obj/local/armeabi
+directory /cygdrive/c/android-sdk-windows/android-ndk-r4b/build/platforms/android-5/arch-arm/usr/include
+directory /cygdrive/c/android-sdk-windows/android-ndk-r4b/sources/cpufeatures
+directory /cygdrive/c/android-sdk-windows/android-ndk-r4b/sources/cpufeatures

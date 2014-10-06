@@ -1,0 +1,159 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity"
+    
+            >
+            
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" 
+    android:background="#FF000000"
+    >
+        
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/headergroup"
+            >
+            
+              
+              
+              <ImageView
+              android:id="@+id/header"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              
+             />
+              <ImageView
+              android:id="@+id/menuheader"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              
+             />
+              <ImageView
+              android:id="@+id/menuheaderright"
+              android:layout_gravity="right"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              
+              
+             />
+              
+              
+            
+        </FrameLayout>
+          
+   
+        
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:id="@+id/listlayout"
+            >
+             <com.example.standouter.XListView
+               android:id="@+id/listView"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="#ff000000"
+               
+               android:fadingEdge="none"  
+               >
+           </com.example.standouter.XListView>
+          
+            <VideoView
+             android:id="@+id/videoView"
+            android:layout_width="match_parent"
+           android:layout_height="155dp" 
+           android:layout_gravity="center"
+             >
+                
+            </VideoView>        
+
+           <ProgressBar
+               android:id="@+id/buffer"
+               style="?android:attr/progressBarStyleSmall"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
+               android:layout_gravity="center_horizontal" />
+
+           
+      
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"           
+            >
+             <ListView
+               android:id="@+id/lvct"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="#000000"
+               >
+             
+               
+               
+           </ListView> 
+            
+           <VideoView
+             android:id="@+id/vvct"
+            android:layout_width="match_parent"
+           android:layout_height="155dp" 
+           android:layout_gravity="center"
+             >
+                
+            </VideoView>        
+
+           <ProgressBar
+               android:id="@+id/bufferct"
+               style="?android:attr/progressBarStyleSmall"
+               android:layout_width="35dp"
+               android:layout_height="35dp"
+               android:layout_gravity="center_horizontal" />
+           </FrameLayout>
+         
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:id="@+id/CONTESTINFO"
+             android:layout_marginTop="0dp"
+            android:background="#a0000000"
+             
+                
+             >
+           <LinearLayout
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:id="@+id/CONTESTINFO"
+                >
+          
+           
+           <TextView
+            android:id="@+id/contesttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin" 
+            
+            android:textColor="#ffffffff"
+            android:textSize="18dp"
+             
+                    />   
+                
+           
+          </LinearLayout>  
+        </ScrollView>
+
+        
+
+</LinearLayout>
+ </FrameLayout>

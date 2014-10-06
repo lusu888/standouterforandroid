@@ -1,0 +1,382 @@
+package adapter;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.standouter.Json;
+import com.example.standouter.Login;
+import com.example.standouter.MainActivity;
+import com.example.standouter.Profile;
+import com.example.standouter.R;
+
+import com.krislq.sliding.beans.RowItem;
+import com.squareup.picasso.Picasso;
+
+public class Contestadapter extends BaseAdapter {
+    Context context;
+    RowItem rowItem;
+    List<RowItem> rowItems;
+    Bitmap bmap;
+    int withz;
+    String b;
+    String name;
+    LayoutInflater mInflater;
+    View convertView2;
+    Activity actvity;
+   
+   
+ 
+    public Contestadapter(Context context, List<RowItem> items,  Activity actvity) {
+        this.context = context;
+        this.rowItems = items;
+        this.actvity=actvity;
+    }
+ 
+    /*private view holder class*/
+    private class ViewHolder {
+        ImageView imageView;
+        ImageView shadowvd;
+        //TextView txtTitle;
+        //TextView txtDesc;
+        RelativeLayout  zhre;
+        Button profilebtn;
+        ImageButton votebtn;
+        ImageButton sharebtn;
+        TextView votetext;
+        JSONObject sharejson;
+    }
+    
+    public static ViewHolder holder;
+ 
+    @SuppressLint("NewApi")
+	public View getView( final int position, View convertView, ViewGroup parent) {
+       holder = null;
+       convertView2=convertView;
+        mInflater = (LayoutInflater)
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.listviewcontest, null);
+            holder = new ViewHolder();
+            
+            //holder.txtDesc = (TextView) convertView.findViewById(R.id.votes);
+            
+            //holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
+           holder.profilebtn=(Button)convertView.findViewById(R.id.vdwriter);
+           holder.shadowvd=(ImageView)convertView.findViewById(R.id.shadowvd);
+           holder.imageView = (ImageView) convertView.findViewById(R.id.vdimage);
+           holder.zhre=(RelativeLayout)convertView.findViewById(R.id.listviewcell);
+          holder.votebtn=(ImageButton)convertView.findViewById(R.id.votebtn);
+          holder.sharebtn= (ImageButton)convertView.findViewById(R.id.sharebtn);
+          holder.votetext=(TextView)convertView.findViewById(R.id.votetext);
+          
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+ 
+        rowItem = (RowItem) getItem(position);
+        
+ 
+        //holder.txtDesc.setText(rowItem.getDesc());
+        //holder.txtTitle.setText(rowItem.getTitle());
+        
+         Picasso.with(convertView.getContext()).load(rowItem.getImageId()). resize(320, 180). into(holder.imageView);
+         Picasso.with(convertView.getContext()).load(R.drawable.shadowvd). resize(320, 51). into(holder.shadowvd);
+         
+         holder.votetext.setText("vote: "+rowItem.getvotecont());
+         holder.sharebtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				//Login.publishStory((Activity) convertView2.getContext(), "https://www.google.com.tw", "https://www.google.com.tw", "https://www.google.com.tw");
+				if(Login.session!=null){
+					holder.sharejson = Json.getJson("http://demostandouter.zerouno.it/video/videoinfo?ri="+rowItems.get(position).getVID(),MainActivity.httpclient);
+				Log.i("",holder.sharejson.toString());
+					String link;
+				try {
+					link = holder.sharejson.getString("videoUrl480");
+					String picture=holder.sharejson.getString("imageUrl320");
+					String des="I%20like%20the%20video%20"+holder.sharejson.getString("ownerName")+"%20in%20Standouter!";
+					
+					/*Log.i("json",Json.getJson("https://graph.facebook.com/me/feed?method=POST&picture="+picture+"&link="+link+
+							"&message="+des+"&access_token="
+							+Login.session.getAccessToken(),MainActivity.httpclient).toString());
+                   */
+					
+					Log.i("",""+holder.sharebtn.getY());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Toast toast;
+				toast = Toast.makeText(convertView2.getContext(),
+						"You have shared it!",
+				        Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				toast.show();
+				
+				}
+				else{
+					Intent intent = new Intent(convertView2.getContext(), Login.class);
+					convertView2.getContext().startActivity(intent);
+					//MainActivity.this.finish();
+					//((Activity) convertView2.getContext()).overridePendingTransition(R.anim.activity_open,R.anim.activity_close);
+					
+				}
+			}
+		});
+         
+         holder.votebtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				JSONObject votejson = Json.getJson("http://demostandouter.zerouno.it/video/vote?ri="+rowItems.get(position).getVID()+"&vt=STANDOUT",MainActivity.httpclient);
+				Toast toast;
+				String Votestate = null;
+				try {
+					Votestate = votejson.getString("result");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (Votestate.equals("unknown")){
+					  toast = Toast.makeText(convertView2.getContext(),
+				                "Please Login first",
+				                Toast.LENGTH_SHORT);
+				        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				        toast.show();
+				        Intent intent = new Intent(convertView2.getContext(), Login.class);
+						convertView2.getContext().startActivity(intent);
+						
+				        
+				}else{
+				try {
+					
+					toast = Toast.makeText(convertView2.getContext(),
+							votejson.getString("message"),
+					        Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+			        toast.show();
+			       Login.writeFileSdcardFile("/sdcard/as.txt", Json.getJson("http://demostandouter.zerouno.it/video/videoinfo?ri="+rowItems.get(position).getVID(),MainActivity.httpclient).toString());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
+		        
+		        Log.i("vote",votejson.toString());
+				/*
+				 try {
+					String Votestate=votejson.getString("result");
+					if (Votestate.equals("unknown")){
+						 Toast toast = Toast.makeText(convertView2.getContext(),
+					                "Please Login first",
+					                Toast.LENGTH_SHORT);
+					        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+					        toast.show();
+					}
+					if (Votestate.equals("accepted")){
+						 Toast toast = Toast.makeText(convertView2.getContext(),
+					                "OK, YOU HAVE VOTED",
+					                Toast.LENGTH_SHORT);
+					        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+					        toast.show();
+					}
+					else{
+						 Toast toast = Toast.makeText(convertView2.getContext(),
+					                "sorry you state is"+votejson.getString("result"),
+					                Toast.LENGTH_SHORT);
+					        toast.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+					        toast.show();
+					}
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+				*/
+			}
+		});
+               
+  
+       
+        //bmap=BitmapFactory.decodeFile (rowItem.getImageId());   
+        //holder.imageView.setImageBitmap(bmap);
+        
+        
+        holder.profilebtn.setText(rowItems.get(position).getTitle());
+        holder.shadowvd.setLayoutParams(new RelativeLayout.LayoutParams(MainActivity.widthz, MainActivity.widthz*115/720));
+        holder.shadowvd.setY((MainActivity.widthz*224/400-MainActivity.widthz*115/720));
+        
+       
+        holder.zhre.setMinimumHeight(MainActivity.widthz*224/400);
+        holder.zhre.setMinimumWidth(MainActivity.widthz);
+        holder.imageView.setLayoutParams(new RelativeLayout.LayoutParams(MainActivity.widthz, MainActivity.widthz*224/400));
+        holder.profilebtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+          String fqlid=rowItems.get(position).getVID();
+				
+				
+				Intent y = new Intent();
+				Bundle bundle = new Bundle();
+                bundle.putString("vid",fqlid);
+                y.putExtras(bundle);
+	            y.setClass(context, Profile.class);
+	            
+	          
+	            context.startActivity(y);
+	           // ((Activity) context).finish();
+	            ((Activity) context).overridePendingTransition(R.anim.activity_open,R.anim.activity_close); 
+	            
+	            
+				
+			}
+		});
+        
+ 
+        return convertView;
+    }
+ 
+    @Override
+    public int getCount() {
+        return rowItems.size();
+    }
+    public void addItem(RowItem item) {  
+    	rowItems.add(item) ;
+    }  
+ 
+    @Override
+    public Object getItem(int position) {
+        return rowItems.get(position);
+    }
+    
+    public String[] getnearpic(int position){
+    	int a = 0;
+		int b=1;
+		int c=2;
+		int d=3;
+		int e=4;
+		
+		
+    	if (position<6){
+    		 a = 0;
+    		 b=1;
+    		c=2;
+    		d=3;
+    		 e=4;
+      
+    		 
+    	}else {if (position>rowItems.size()-6){
+    		 a = 0;
+    		 b=1;
+    		c=2;
+    		d=3;
+    		 e=4;
+    		  
+    		 
+    	}else{
+    		a =position-2;
+   		 b=position-1;
+   		c=position;
+   		d=position+1;
+   		 e=position+2;
+   	  
+   		 
+    	}
+    	}
+		return new String[]{rowItems.get(a).getImageId(),
+				            rowItems.get(b).getImageId(),
+				            rowItems.get(c).getImageId()
+				            ,rowItems.get(d).getImageId()
+				            ,rowItems.get(e).getImageId()
+				            } ;
+    	
+    }
+
+    public String[] getneardec(int position){
+    	int a = 0;
+		int b=1;
+		int c=2;
+		int d=3;
+		int e=4;
+		
+		
+    	if (position<6){
+    		 a = 0;
+    		 b=1;
+    		c=2;
+    		d=3;
+    		 e=4;
+      
+    		 
+    	}else {if (position>rowItems.size()-6){
+    		 a = 0;
+    		 b=1;
+    		c=2;
+    		d=3;
+    		 e=4;
+    		 
+    		 
+    	}else{
+    		a =position-2;
+   		 b=position-1;
+   		c=position;
+   		d=position+1;
+   		 e=position+2;
+   	   
+   		 
+    	}
+    	}
+		return new String[]{rowItems.get(a).getDesc(),
+				            rowItems.get(b).getDesc(),
+				            rowItems.get(c).getDesc()
+				            ,rowItems.get(d).getDesc()
+				            ,rowItems.get(e).getDesc()
+				            } ;
+    	
+    }
+    
+    public String getItemdesc(int position) {
+        return rowItems.get(position).getDesc();
+    }
+ 
+    @Override
+    public long getItemId(int position) {
+        return rowItems.indexOf(getItem(position));
+    }
+}

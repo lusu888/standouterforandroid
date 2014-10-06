@@ -1,0 +1,138 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".Loginactivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/headerlayoutlogin"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" >
+
+            <ImageView
+                android:id="@+id/headerimglogin"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true" />
+
+            <ImageView
+                android:id="@+id/imgmenuleftlogin"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left" />
+                />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/contentlayoutlogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <com.facebook.widget.LoginButton
+                android:id="@+id/fbloginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/fbloginButton"
+                android:src="@drawable/line" />
+
+            <EditText
+                android:id="@+id/editTextusername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/textview_style"
+                android:ems="10"
+                android:hint="USERNAME"
+                android:inputType="textPersonName" >
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/editTextpassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextusername"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/textview_style"
+                android:ems="10"
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/accedibtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextpassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:clickable="true"
+                android:text="ACCEDI"
+                android:textColor="@color/text_color"
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/editTextpassword"
+                android:layout_below="@+id/accedibtn"
+                android:layout_marginTop="19dp"
+                android:text="Non sei ancora registrato? "
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#a0a0a0" />
+
+            <TextView
+                android:id="@+id/regbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignBottom="@+id/textView1"
+                android:layout_toRightOf="@+id/textView1"
+                android:clickable="true"
+                android:text="Registrati!"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/text_color" />
+
+            <TextView
+                android:id="@+id/recuperabtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:text="Recupera Password!"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/text_color" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

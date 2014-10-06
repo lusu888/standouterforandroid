@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="adapter.page1adapter"  
+   android:descendantFocusability= "blocksDescendants"
+     >
+
+   
+
+    <ImageView
+        android:id="@+id/videoimg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+   
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom" 
+        android:background="@drawable/shadowvd"
+       >
+
+         <TextView
+             android:id="@+id/videotitle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_alignParentLeft="true"
+             android:layout_marginBottom="10dp"
+             android:layout_marginLeft="10dp"
+             android:gravity="bottom"
+             android:text="videotitle"
+             android:textSize="12dp"
+             android:textColor="#ffffff" />
+
+         <TextView
+             android:id="@+id/videowriter"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignLeft="@+id/videotitle"
+             android:layout_centerVertical="true"
+             android:clickable="true"
+             android:focusable="false"
+             android:text="videowriter"
+             android:textAppearance="?android:attr/textAppearanceLarge"
+             android:textColor="@color/text_color" />
+
+         <TextView
+             android:id="@+id/votecount"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignBaseline="@+id/videotitle"
+             android:layout_alignBottom="@+id/videotitle"
+             android:layout_alignParentRight="true"
+             android:layout_marginRight="10dp"
+             android:text="0"
+             android:gravity="right"
+             android:textAppearance="?android:attr/textAppearanceLarge"
+             android:textColor="@drawable/standouterred" />
+        
+    </RelativeLayout>
+
+</FrameLayout>
